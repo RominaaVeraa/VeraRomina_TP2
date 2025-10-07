@@ -1,1 +1,0 @@
-# VeraRomina_TP2
