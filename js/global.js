@@ -45,13 +45,31 @@ function initializeSearch() {
   const searchContainer = document.querySelector('.search-container-inline');
   const searchBtnOpen = document.querySelector('.search-btn-open');
   const searchBtnClose = document.querySelector('.search-btn-close');
+  const logo = document.querySelector('.logo');
+  const headerIcons = document.querySelector('.header-icons');
+  const menuToggle = document.querySelector('.mobile-menu-toggle');
 
   if (searchBtnOpen && searchContainer) {
     searchBtnOpen.addEventListener('click', (e) => {
       e.stopPropagation();
       searchContainer.classList.add('active');
       searchBtnOpen.classList.add('hidden');
-      setTimeout(() => searchInput?.focus(), 100);
+      
+      if (window.innerWidth <= 700) {
+        if (logo) {
+          logo.classList.add('hide-mobile');
+        }
+        if (headerIcons) {
+          headerIcons.classList.add('hide-mobile');
+        }
+        if (menuToggle) {
+          menuToggle.classList.add('hide-mobile');
+        }
+      }
+      
+      setTimeout(() => {
+        if (searchInput) searchInput.focus();
+      }, 100);
     });
   }
 
@@ -73,23 +91,40 @@ function initializeSearch() {
   }
 
   document.addEventListener('click', (e) => {
-    if (searchContainer?.classList.contains('active') &&
-        !searchContainer.contains(e.target) &&
-        !searchBtnOpen?.contains(e.target)) {
-      closeSearch();
+    if (searchContainer && searchContainer.classList.contains('active')) {
+      if (!searchContainer.contains(e.target) && 
+          (!searchBtnOpen || !searchBtnOpen.contains(e.target))) {
+        closeSearch();
+      }
     }
   });
 
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && searchContainer?.classList.contains('active')) {
+    if (e.key === 'Escape' && searchContainer && searchContainer.classList.contains('active')) {
       closeSearch();
     }
   });
 
   function closeSearch() {
-    searchContainer?.classList.remove('active');
-    searchBtnOpen?.classList.remove('hidden');
-    if (searchInput) searchInput.value = '';
+    if (searchContainer) {
+      searchContainer.classList.remove('active');
+    }
+    if (searchBtnOpen) {
+      searchBtnOpen.classList.remove('hidden');
+    }
+    if (searchInput) {
+      searchInput.value = '';
+    }
+    
+    if (logo) {
+      logo.classList.remove('hide-mobile');
+    }
+    if (headerIcons) {
+      headerIcons.classList.remove('hide-mobile');
+    }
+    if (menuToggle) {
+      menuToggle.classList.remove('hide-mobile');
+    }
   }
 }
 
